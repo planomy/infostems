@@ -1,0 +1,38 @@
+/** Dropdown labels (must match `JUNIOR_SETS` / `OLDER_SETS` order). */
+export const JUNIOR_SET_TITLES = [
+  'Animals',
+  'School',
+  'Sport',
+  'Food',
+  'Adventure',
+  'Beach',
+  'Space',
+  'Mystery',
+  'Weather',
+  'Dinosaurs',
+  'Magic',
+  'The zoo',
+  'Camping',
+  'Birthday party',
+  'Pirates',
+  'The farm',
+] as const
+
+export const SENIOR_SET_TITLES = [
+  'Advertising',
+  'Social media',
+  'Environment',
+  'Film',
+  'Protest',
+  'Sport & pressure',
+  'Technology',
+  'War & conflict',
+  'News media',
+  'Consumer culture',
+  'Identity',
+  'Power',
+  'Australian history',
+  'Crime fiction',
+  'Dystopian fiction',
+  'Sustainability',
+] as const
