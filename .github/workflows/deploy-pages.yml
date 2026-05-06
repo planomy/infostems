@@ -1,20 +1,34 @@
-# Build Vite app and publish ./dist to branch gh-pages for GitHub Pages.
-# Repo Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: gh-pages / /(root)
+# Publishes ./dist to GitHub Pages using the official Actions integration.
+#
+# After the first successful run, set:
+#   Repo → Settings → Pages → Build and deployment → Source: GitHub Actions
+# (Not “Deploy from a branch”.)
+#
+# If the site was blank before: Jekyll on Pages ignored paths under `assets/` unless
+# `.nojekyll` exists — we ship `public/.nojekyll` into dist via Vite.
 
 name: Deploy to GitHub Pages
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -26,8 +40,11 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - uses: peaceiris/actions-gh-pages@v4
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          force_orphan: true
+          path: dist
+
+      - uses: actions/deploy-pages@v4
+        id: deployment
